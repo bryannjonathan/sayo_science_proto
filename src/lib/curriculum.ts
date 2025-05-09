@@ -8,8 +8,8 @@ export type Subtopic = {
   grade: string;
 };
 
-export function getParsedBio(): Record<string, { title: string; subtopics: Subtopic[] }[]> {
-  const result: Record<string, { title: string; subtopics: Subtopic[] }[]> = {};
+export function getParsedBio(): Record<string, { title: string; topic_id : string; subtopics: Subtopic[] }[]> {
+  const result: Record<string, { title: string; topic_id : string; subtopics: Subtopic[] }[]> = {};
 
   const levels = Object.entries(rawData); // e.g., "Secondary 4-6"
 
