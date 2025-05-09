@@ -34,7 +34,7 @@ export default function CurriculumView() {
       {/* Chapter-wise rendering */}
       {curriculum[activeGrade].map((chapter, idx) => (
         <div key={idx}>
-          <ChapterHeader title={`Chapter ${chapter.topic_id}`} />
+          <ChapterHeader title={`Chapter ${chapter.topic_id}: ${chapter.title}`} />
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
             {chapter.subtopics.map((sub) => (
               <SubtopicCard
