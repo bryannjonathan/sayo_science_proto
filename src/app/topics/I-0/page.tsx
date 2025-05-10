@@ -3,7 +3,7 @@ import React from 'react';
 export default function MoleculesOfLifePage() {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 I-0 Molecules of Life</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Molecules of Life</h1>
       <p className="text-gray-700 mb-6">
         Cells and biomolecules are fundamental units of life. This chapter introduces key biological molecules such as water, ions, carbohydrates, lipids, proteins, and nucleic acids — and how they contribute to the structure and function of organisms.
       </p>

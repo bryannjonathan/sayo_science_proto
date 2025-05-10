@@ -3,7 +3,7 @@ import React from 'react';
 const EssentialLifeProcessesInAnimalsPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 III-9 Essential life processes in animals</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Essential life processes in animals</h1>
       
       <p className="text-gray-700 mb-6">
         Animals, including humans, perform essential life processes that maintain their survival and interaction with the environment. This subchapter explores how animals obtain and process nutrients, exchange gases, and transport substances throughout their bodies. Using humans as a model organism, we'll examine the intricate systems that enable these vital functions and how they adapt to environmental demands. Understanding these processes provides insight into the remarkable complexity of animal biology and our place within ecosystems.

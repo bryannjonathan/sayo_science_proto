@@ -3,7 +3,7 @@ import React from 'react';
 const BiodiversityAndEvolutionPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 II-7 Biodiversity and evolution</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Biodiversity and evolution</h1>
       
       <p className="text-gray-700 mb-6">
         Biodiversity and evolution are fundamental concepts in biology that help us understand the incredible variety of life on Earth and how it has changed over time. This subchapter explores the diversity of life forms, classification systems, and the mechanisms driving evolutionary change. Through studying these concepts, we'll gain insights into how organisms adapt to their environments and how modern classification reflects evolutionary relationships. We'll examine evidence for evolution, including fossils and molecular data, and explore different theories about the origins of life.

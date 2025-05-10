@@ -3,7 +3,7 @@ import React from 'react';
 const CellularOrganisationPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 I-1 Cellular organisation</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Cellular organisation</h1>
       
       <p className="text-gray-700 mb-6">
         Cells are the fundamental building blocks of all living organisms, and understanding their organization is crucial to comprehending life itself. This subchapter explores the fascinating world of cellular organization, from the discovery of cells to the intricate structures that enable them to function. We'll examine the differences between prokaryotic and eukaryotic cells, study various organelles and their specialized functions, and learn how technological advancements like the microscope have revolutionized our understanding of cellular biology. By the end of this section, you'll appreciate how cells, despite their microscopic size, carry out complex processes essential for life.

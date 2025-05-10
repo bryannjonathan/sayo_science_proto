@@ -3,7 +3,7 @@ import React from 'react';
 const CellularEnergeticsPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 I-4 Cellular energetics</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Cellular energetics</h1>
       
       <p className="text-gray-700 mb-6">
         Cellular energetics explores the fundamental processes that power life at the molecular level. 

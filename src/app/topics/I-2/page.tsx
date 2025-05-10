@@ -3,7 +3,7 @@ import React from 'react';
 const MovementOfSubstancesAcrossMembranePage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 I-2 Movement of substances across membrane</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Movement of substances across membrane</h1>
       
       <p className="text-gray-700 mb-6">
         The movement of substances across cell membranes is fundamental to all life processes. 

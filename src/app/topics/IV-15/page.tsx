@@ -3,7 +3,7 @@ import React from 'react';
 const DiseasesPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 IV-15 Diseases</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Diseases</h1>
       
       <p className="text-gray-700 mb-6">
         Understanding diseases is fundamental to maintaining personal and community health. In this subchapter, we'll explore the different types of diseases, their causes, transmission methods, and prevention strategies. From infectious diseases caused by pathogens to non-infectious conditions linked to lifestyle factors, we'll examine how biological principles can be applied to disease control and prevention. You'll learn about the body's defense mechanisms, the importance of vaccination, and the responsible use of medical treatments like antibiotics.

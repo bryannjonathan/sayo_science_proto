@@ -3,7 +3,7 @@ import React from 'react';
 const HomeostasisPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 III-12 Homeostasis</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Homeostasis</h1>
       
       <p className="text-gray-700 mb-6">
         Homeostasis is a fundamental concept in biology that explains how organisms maintain stable internal conditions despite changes in their external environment. This subchapter explores the delicate balance our bodies maintain through complex feedback mechanisms, focusing particularly on blood glucose regulation. We'll examine how organs like the liver and pancreas, along with hormones like insulin and glucagon, work together to keep our internal environment within optimal ranges. Understanding homeostasis helps us appreciate the intricate systems that allow organisms to survive and thrive in varying conditions.

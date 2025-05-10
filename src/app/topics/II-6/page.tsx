@@ -3,7 +3,7 @@ import React from 'react';
 const MolecularGeneticsPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 II-6 Molecular genetics</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Molecular genetics</h1>
       
       <p className="text-gray-700 mb-6">
         Molecular genetics forms the foundation of modern biology, bridging the gap between genes and their expression in living organisms. 

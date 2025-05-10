@@ -3,7 +3,7 @@ import React from 'react';
 const CoordinationAndResponsePage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 III-11 Coordination and response</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Coordination and response</h1>
       
       <p className="text-gray-700 mb-6">
         In this subchapter, we explore how organisms detect and respond to changes in their environment, 

@@ -3,7 +3,7 @@ import React from 'react';
 const ReproductionGrowthAndDevelopmentPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">🔬 III-10 Reproduction, growth and development</h1>
+      <h1 className="text-3xl font-bold mb-6">🔬 Reproduction, growth and development</h1>
       
       <p className="text-gray-700 mb-6">
         Reproduction, growth, and development are fundamental processes that ensure the continuity of life. 

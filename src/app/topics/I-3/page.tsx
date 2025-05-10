@@ -3,7 +3,7 @@ import React from 'react';
 const CellCycleAndDivisionPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 I-3 Cell cycle and division</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Cell cycle and division</h1>
       
       <p className="text-gray-700 mb-6">
         The cell cycle and division are fundamental processes that enable growth, repair, and reproduction in all living organisms. 

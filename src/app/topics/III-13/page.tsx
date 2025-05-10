@@ -3,7 +3,7 @@ import React from 'react';
 const EcosystemsPage = () => {
   return (
     <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 III-13 Ecosystems</h1>
+      <h1 className="text-3xl font-bold mb-4">🔬 Ecosystems</h1>
       
       <p className="text-gray-700 mb-6">
         Ecosystems form the foundation of life on Earth, where organisms interact with each other and their physical environment. 
