@@ -23,21 +23,26 @@ export default function CurriculumView() {
   return (
     <div>
       {/* Tabs for "Secondary Biology" and "Primary Science" */}
-      <div className="flex gap-2 mb-6">
-        {sourceLabels.map((label) => (
-          <button
-            key={label}
-            onClick={() => setActiveSource(label as SourceKey)}
-            className={`px-4 py-2 rounded-full ${
-              label === activeSource
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-black'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+      <div className="flex w-full max-w-md rounded-md bg-slate-100 p-1 mb-6">
+        {sourceLabels.map((label) => {
+          const isActive = label === activeSource;
+          return (
+            <button
+              key={label}
+              onClick={() => setActiveSource(label as SourceKey)}
+              className={`flex-1 py-2 px-3 rounded-md text-sm sm:text-base font-medium transition-all
+          ${isActive
+                  ? 'bg-white text-slate-800 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-800'}`}
+              aria-selected={isActive}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
+
+      
 
       {/* Render content depending on source */}
       {activeSource === 'Secondary Biology' ? (
@@ -45,9 +50,9 @@ export default function CurriculumView() {
           <div key={grade}>
             {/* <h2 className="text-xl font-semibold mb-4">{grade}</h2> */}
             {chapters.map((chapter, idx) => (
-              <div key={idx}>
+              <div key={idx} className="mb-8">
                 <ChapterHeader title={`Chapter ${chapter.topic_id}: ${chapter.title}`} />
-                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {chapter.subtopics.map((sub) => (
                     <SubtopicCard
                       key={sub.id}
@@ -63,9 +68,9 @@ export default function CurriculumView() {
         ))
       ) : (
         Object.entries(sources[activeSource]).map(([level, items]) => (
-          <div key={level}>
+          <div key={level} className="mb-8">
             <ChapterHeader title={level} />
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {items.map((item) => (
                 <SubtopicCard
                   key={item.id}
