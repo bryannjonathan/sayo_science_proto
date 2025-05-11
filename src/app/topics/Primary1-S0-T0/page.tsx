@@ -1,98 +1,186 @@
-import React from 'react';
-import BackButton from '@/components/BackButton';
+'use client'
+
+import {
+  BookOpen,
+  Target,
+  Lightbulb,
+  CheckSquare,
+  Heart,
+  Microscope,
+  HelpCircle,
+} from 'lucide-react'
+import BackButton from '@/components/BackButton'
+import Quiz from '@/components/Quiz'
+import type { QuizData } from '@/components/Quiz'
+
+const quizData: QuizData = {
+  mcq: [
+    {
+      question: "What covers more of the Earth's surface: oceans or land?",
+      options: [
+        { label: "A", text: "Oceans" },
+        { label: "B", text: "Land" },
+        { label: "C", text: "They are the same" },
+        { label: "D", text: "I don't know" },
+      ],
+      answer: "A",
+    },
+    {
+      question: "What surrounds the Earth's surface?",
+      options: [
+        { label: "A", text: "Water" },
+        { label: "B", text: "Atmosphere (gases)" },
+        { label: "C", text: "Rocks" },
+        { label: "D", text: "Fire" },
+      ],
+      answer: "B",
+    },
+    {
+      question: "Who shares the Earth as their home?",
+      options: [
+        { label: "A", text: "Only humans" },
+        { label: "B", text: "Only animals" },
+        { label: "C", text: "Humans, animals, and plants" },
+        { label: "D", text: "Only plants" },
+      ],
+      answer: "C",
+    },
+    {
+      question: "Why is it important to care for the Earth?",
+      options: [
+        { label: "A", text: "Because it is our home" },
+        { label: "B", text: "Because it is pretty" },
+        { label: "C", text: "Because it is big" },
+        { label: "D", text: "Because it is far away" },
+      ],
+      answer: "A",
+    },
+    {
+      question: "What is the Earth's surface mostly covered by?",
+      options: [
+        { label: "A", text: "Sand" },
+        { label: "B", text: "Water" },
+        { label: "C", text: "Trees" },
+        { label: "D", text: "Mountains" },
+      ],
+      answer: "B",
+    },
+  ],
+  true_false: [
+    { statement: "The Earth's surface is mostly covered by land", answer: false },
+    { statement: "The atmosphere is a layer of gases around the Earth", answer: true },
+    { statement: "Only humans live on Earth", answer: false },
+  ],
+  open_ended: [
+    { question: "Name one way you can help take care of the Earth." },
+    { question: "What are two things that cover the Earth's surface?" },
+    { question: "Why is the Earth important to us?" },
+  ],
+}
 
 export default function EarthsCharacteristicsPage() {
   return (
-    <main className="max-w-5xl mx-auto p-6">
-      <BackButton />
-      <h1 className="text-3xl font-bold mb-4">🔬 Primary1-S2-T0 Earth’s characteristics</h1>
-      <p className="text-gray-700 mb-6">
-        The Earth is our shared home, full of oceans, land, and a protective atmosphere. In this lesson, students will explore the basic features of our planet and understand the importance of taking care of the Earth for all living beings.
-      </p>
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="px-4 py-4 max-w-5xl mx-auto">
+          <BackButton />
+        </div>
+      </header>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🎯 Learning Objectives</h2>
-        <ul className="list-disc list-inside">
-          <li>Be aware that the surface of the Earth is covered by oceans and land, and that oceans cover more areas than land</li>
-          <li>Be aware that the surface of the Earth is surrounded by the atmosphere (gases)</li>
-          <li>Be aware that the Earth is the shared home for humans, animals and plants</li>
-          <li>Understand the importance of caring for the Earth</li>
-        </ul>
-      </section>
+      <main className="px-4 py-8 max-w-5xl mx-auto">
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 rounded-lg bg-teal-100 text-teal-700">
+              <BookOpen className="h-6 w-6" />
+            </div>
+            <h1 className="text-3xl font-bold text-slate-800">Primary1-S2-T0 Earth’s Characteristics</h1>
+          </div>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🧪 Interactive Activities</h2>
-        <ul className="list-disc list-inside">
-          <li>Model the Earth's surface using playdough to differentiate oceans and land</li>
-          <li>Create a poster on ways to care for the Earth</li>
-          <li>Watch a short video showing views of Earth from space and discuss observations</li>
-        </ul>
-      </section>
+          <div className="bg-white/70 backdrop-blur-sm border border-teal-100 rounded-xl p-6 mb-8">
+            <p className="text-slate-700 leading-relaxed">
+              The Earth is our shared home, full of oceans, land, and a protective atmosphere. In this lesson,
+              students will explore the basic features of our planet and understand the importance of taking care of
+              the Earth for all living beings.
+            </p>
+          </div>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">✅ Learning Outcomes</h2>
-        <p>
-          Students will be able to identify the main components of Earth’s surface and explain why it is important to care for our planet.
-        </p>
-      </section>
+          <div className="grid gap-5 md:grid-cols-2">
+            <SectionCard icon={<Target className="h-5 w-5 text-emerald-600" />} title="Learning Objectives" color="emerald">
+              <ul className="space-y-3 list-disc pl-5 marker:text-emerald-500">
+                <li>Oceans cover more of the Earth's surface than land</li>
+                <li>The Earth’s surface is surrounded by the atmosphere</li>
+                <li>Earth is shared by humans, animals, and plants</li>
+                <li>We must care for the planet</li>
+              </ul>
+            </SectionCard>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🌱 Values & Attitudes</h2>
-        <ul className="list-disc list-inside">
-          <li>Show care and responsibility for the environment</li>
-          <li>Appreciate Earth as a shared home for all living things</li>
-        </ul>
-      </section>
+            <SectionCard icon={<Lightbulb className="h-5 w-5 text-amber-600" />} title="Interactive Activities" color="amber">
+              <ul className="space-y-3 list-disc pl-5 marker:text-amber-500">
+                <li>Model the Earth with playdough (oceans vs land)</li>
+                <li>Create a care-for-Earth poster</li>
+                <li>Watch Earth-from-space videos and discuss</li>
+              </ul>
+            </SectionCard>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🔍 STSE Connections</h2>
-        <ul className="list-disc list-inside">
-          <li>Discuss the role of satellites in monitoring Earth’s surface and atmosphere</li>
-          <li>Explore how pollution affects land, water, and air</li>
-        </ul>
-      </section>
+            <SectionCard icon={<CheckSquare className="h-5 w-5 text-sky-600" />} title="Learning Outcomes" color="sky">
+              <p className="text-slate-700 leading-relaxed">
+                Students will identify Earth’s key surface features and explain the importance of caring for it.
+              </p>
+            </SectionCard>
 
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4">📝 Practice Questions</h2>
+            <SectionCard icon={<Heart className="h-5 w-5 text-rose-600" />} title="Values & Attitudes" color="rose">
+              <ul className="space-y-3 list-disc pl-5 marker:text-rose-500">
+                <li>Show care for the environment</li>
+                <li>Appreciate Earth as a shared home</li>
+              </ul>
+            </SectionCard>
 
-        <h3 className="font-semibold text-lg mb-2">Multiple Choice</h3>
-        <ol className="list-decimal list-inside space-y-2">
-          <li>
-            What covers more of the Earth's surface: oceans or land?<br />
-            <strong>A. Oceans ✅</strong> B. Land C. They are the same D. I don't know
-          </li>
-          <li>
-            What surrounds the Earth's surface?<br />
-            A. Water <strong>B. Atmosphere (gases) ✅</strong> C. Rocks D. Fire
-          </li>
-          <li>
-            Who shares the Earth as their home?<br />
-            A. Only humans B. Only animals <strong>C. Humans, animals, and plants ✅</strong> D. Only plants
-          </li>
-          <li>
-            Why is it important to care for the Earth?<br />
-            <strong>A. Because it is our home ✅</strong> B. Because it is pretty C. Because it is big D. Because it is far away
-          </li>
-          <li>
-            What is the Earth's surface mostly covered by?<br />
-            A. Sand <strong>B. Water ✅</strong> C. Trees D. Mountains
-          </li>
-        </ol>
+            <SectionCard icon={<Microscope className="h-5 w-5 text-indigo-600" />} title="STSE Connections" color="indigo">
+              <ul className="space-y-3 list-disc pl-5 marker:text-indigo-500">
+                <li>Explore how satellites monitor Earth’s surface</li>
+                <li>Discuss pollution’s impact on land, water, air</li>
+              </ul>
+            </SectionCard>
+          </div>
 
-        <h3 className="font-semibold text-lg mt-6 mb-2">True or False</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>The Earth's surface is mostly covered by land — <strong>False ❌</strong></li>
-          <li>The atmosphere is a layer of gases around the Earth — <strong>True ✅</strong></li>
-          <li>Only humans live on Earth — <strong>False ❌</strong></li>
-        </ul>
+          <div className="mt-8">
+            <SectionCard icon={<HelpCircle className="h-5 w-5 text-purple-600" />} title="Practice Questions" color="purple">
+              <Quiz quizData={quizData} />
+            </SectionCard>
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
 
-        <h3 className="font-semibold text-lg mt-6 mb-2">Open-ended</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Name one way you can help take care of the Earth.</li>
-          <li>What are two things that cover the Earth's surface?</li>
-          <li>Why is the Earth important to us?</li>
-        </ul>
-      </section>
-    </main>
-  );
+function SectionCard({
+  title,
+  children,
+  icon,
+  color,
+}: {
+  title: string
+  children: React.ReactNode
+  icon: React.ReactNode
+  color: 'emerald' | 'amber' | 'sky' | 'rose' | 'indigo' | 'purple'
+}) {
+  const colorClasses = {
+    emerald: 'border-emerald-100 bg-emerald-50/50',
+    amber: 'border-amber-100 bg-amber-50/50',
+    sky: 'border-sky-100 bg-sky-50/50',
+    rose: 'border-rose-100 bg-rose-50/50',
+    indigo: 'border-indigo-100 bg-indigo-50/50',
+    purple: 'border-purple-100 bg-purple-50/50',
+  }
+
+  return (
+    <div className={`border rounded-xl p-5 backdrop-blur-sm ${colorClasses[color]}`}>
+      <div className="flex items-center gap-2 mb-3">
+        {icon}
+        <h2 className="text-lg font-semibold text-slate-800">{title}</h2>
+      </div>
+      <div>{children}</div>
+    </div>
+  )
 }

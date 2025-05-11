@@ -1,120 +1,183 @@
-import React from 'react';
+'use client'
+
+import { BookOpen, Target, Lightbulb, CheckSquare, Heart, Microscope, HelpCircle } from 'lucide-react'
+import BackButton from '@/components/BackButton'
+import Quiz from '@/components/Quiz'
+import type { QuizData } from '@/components/Quiz'
+
+const quizData: QuizData = {
+  mcq: [
+    {
+      question: 'Which of the following is NOT a function of water in living organisms?',
+      options: [
+        { label: 'A', text: 'Solvent' },
+        { label: 'B', text: 'Structural support' },
+        { label: 'C', text: 'Stores genetic info' },
+        { label: 'D', text: 'Temperature regulation' },
+      ],
+      answer: 'C',
+    },
+    {
+      question: 'Which inorganic ion is key in chlorophyll?',
+      options: [
+        { label: 'A', text: 'Calcium' },
+        { label: 'B', text: 'Magnesium' },
+        { label: 'C', text: 'Iron' },
+        { label: 'D', text: 'Nitrogen' },
+      ],
+      answer: 'B',
+    },
+    {
+      question: 'What is the building block of proteins?',
+      options: [
+        { label: 'A', text: 'Monosaccharides' },
+        { label: 'B', text: 'Fatty acids' },
+        { label: 'C', text: 'Amino acids' },
+        { label: 'D', text: 'Nucleotides' },
+      ],
+      answer: 'C',
+    },
+    {
+      question: 'What is primarily used for long-term energy storage?',
+      options: [
+        { label: 'A', text: 'Carbs' },
+        { label: 'B', text: 'Proteins' },
+        { label: 'C', text: 'Lipids' },
+        { label: 'D', text: 'Nucleic acids' },
+      ],
+      answer: 'C',
+    },
+    {
+      question: 'Which test detects reducing sugars?',
+      options: [
+        { label: 'A', text: 'Iodine' },
+        { label: 'B', text: 'Benedict’s' },
+        { label: 'C', text: 'Grease spot' },
+        { label: 'D', text: 'Biuret' },
+      ],
+      answer: 'B',
+    },
+  ],
+  true_false: [
+    { statement: 'Water helps organisms maintain stable temperature', answer: true },
+    { statement: 'All carbohydrates are water-soluble', answer: false },
+    { statement: 'Only proteins can act as enzymes', answer: false },
+  ],
+  open_ended: [
+    {
+      question: 'Explain the importance of water in biological systems with examples.',
+    },
+    {
+      question: 'How does lipid structure relate to its function in the body?',
+    },
+    {
+      question: 'Discuss the ethical concerns about applying biological knowledge of molecules of life.',
+    },
+  ],
+}
 
 export default function MoleculesOfLifePage() {
   return (
-    <main className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">🔬 Molecules of Life</h1>
-      <p className="text-gray-700 mb-6">
-        Cells and biomolecules are fundamental units of life. This chapter introduces key biological molecules such as water, ions, carbohydrates, lipids, proteins, and nucleic acids — and how they contribute to the structure and function of organisms.
-      </p>
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="px-4 py-4 max-w-5xl mx-auto">
+          <BackButton />
+        </div>
+      </header>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🎯 Learning Objectives</h2>
-        <ul className="list-disc list-inside">
-          <li>Understand the roles of water and inorganic ions like nitrogen, magnesium, calcium, and iron</li>
-          <li>Describe the structure and functions of carbohydrates, lipids, proteins, and nucleic acids</li>
-        </ul>
-      </section>
+      <main className="px-4 py-8 max-w-5xl mx-auto">
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 rounded-lg bg-teal-100 text-teal-700">
+              <BookOpen className="h-6 w-6" />
+            </div>
+            <h1 className="text-3xl font-bold text-slate-800">Secondary1-Topic Molecules of Life</h1>
+          </div>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🧪 Interactive Activities</h2>
-        <ul className="list-disc list-inside">
-          <li>
-            <strong>Lab Test Simulation:</strong> Simulate or perform Benedict’s, iodine, grease spot, and Biuret tests using virtual lab tools or safe classroom kits.
-          </li>
-          <li>
-            <strong>Water Debate:</strong> Students debate whether life could exist without water and compare isotonic vs. mineral water.
-          </li>
-          <li>
-            <strong>Ion Match:</strong> Match each ion (Ca²⁺, Fe²⁺, Mg²⁺) with its biological role through flashcards or drag-and-drop UI.
-          </li>
-        </ul>
-      </section>
+          <div className="bg-white/70 backdrop-blur-sm border border-teal-100 rounded-xl p-6 mb-8">
+            <p className="text-slate-700 leading-relaxed">
+              Cells and biomolecules are fundamental units of life. This chapter introduces key biological molecules
+              such as water, ions, carbohydrates, lipids, proteins, and nucleic acids — and how they contribute to the
+              structure and function of organisms.
+            </p>
+          </div>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">✅ Learning Outcomes</h2>
-        <p>
-          Students will be able to relate the biological significance of water, ions, and biomolecules to essential life functions and biochemical processes.
-        </p>
-      </section>
+          <div className="grid gap-5 md:grid-cols-2">
+            <SectionCard icon={<Target className="h-5 w-5 text-emerald-600" />} title="Learning Objectives" color="emerald">
+              <ul className="space-y-3 list-disc pl-5 marker:text-emerald-500">
+                <li>Understand the roles of water and inorganic ions like nitrogen, magnesium, calcium, and iron</li>
+                <li>Describe the structure and functions of carbohydrates, lipids, proteins, and nucleic acids</li>
+              </ul>
+            </SectionCard>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🌱 Values & Attitudes</h2>
-        <ul className="list-disc list-inside">
-          <li>Show appreciation for the complexity of life and responsibility for the environment</li>
-          <li>Adopt a healthy lifestyle and consider ethical implications of biotechnology</li>
-        </ul>
-      </section>
+            <SectionCard icon={<Lightbulb className="h-5 w-5 text-amber-600" />} title="Interactive Activities" color="amber">
+              <ul className="space-y-3 list-disc pl-5 marker:text-amber-500">
+                <li><strong>Lab Test Simulation:</strong> Use Benedict’s, iodine, grease spot, Biuret tests virtually or in class</li>
+                <li><strong>Water Debate:</strong> Could life exist without water? Discuss!</li>
+                <li><strong>Ion Match:</strong> Match Ca²⁺, Fe²⁺, Mg²⁺ to biological roles using flashcards</li>
+              </ul>
+            </SectionCard>
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🔍 STSE Connections</h2>
-        <ul className="list-disc list-inside">
-          <li>Understand the use of molecular biology in health, food tech, and pharmaceuticals</li>
-          <li>Appreciate the role of technologies like microscopy and DNA sequencing</li>
-        </ul>
-      </section>
+            <SectionCard icon={<CheckSquare className="h-5 w-5 text-sky-600" />} title="Learning Outcomes" color="sky">
+              <p className="text-slate-700 leading-relaxed">
+                Students will be able to relate the biological significance of water, ions, and biomolecules to essential
+                life functions and biochemical processes.
+              </p>
+            </SectionCard>
 
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4">📝 Practice Questions</h2>
+            <SectionCard icon={<Heart className="h-5 w-5 text-rose-600" />} title="Values & Attitudes" color="rose">
+              <ul className="space-y-3 list-disc pl-5 marker:text-rose-500">
+                <li>Show appreciation for the complexity of life and responsibility for the environment</li>
+                <li>Adopt a healthy lifestyle and consider ethical implications of biotechnology</li>
+              </ul>
+            </SectionCard>
 
-        <h3 className="font-semibold text-lg mb-2">Multiple Choice</h3>
-        <ol className="list-decimal list-inside space-y-2">
-          <li>
-            Which of the following is NOT a function of water in living organisms?<br />
-            A. Solvent B. Structural support <strong>C. Stores genetic info ✅</strong> D. Temperature regulation
-          </li>
-          <li>
-            Which inorganic ion is key in chlorophyll?<br />
-            A. Calcium <strong>B. Magnesium ✅</strong> C. Iron D. Nitrogen
-          </li>
-          <li>
-            What is the building block of proteins?<br />
-            A. Monosaccharides B. Fatty acids <strong>C. Amino acids ✅</strong> D. Nucleotides
-          </li>
-          <li>
-            What is primarily used for long-term energy storage?<br />
-            A. Carbs B. Proteins <strong>C. Lipids ✅</strong> D. Nucleic acids
-          </li>
-          <li>
-            Which test detects reducing sugars?<br />
-            A. Iodine <strong>B. Benedict’s ✅</strong> C. Grease spot D. Biuret
-          </li>
-          <li>
-            What is the main function of nucleic acids?<br />
-            A. Energy B. Structure <strong>C. Genetic info ✅</strong> D. Enzymes
-          </li>
-          <li>
-            Which of the following is a disaccharide?<br />
-            A. Glucose B. Fructose <strong>C. Sucrose ✅</strong> D. Cellulose
-          </li>
-          <li>
-            Why is iron important in the body?<br />
-            <strong>A. Hemoglobin component ✅</strong> B. Bone strength C. Nerve impulse D. Energy source
-          </li>
-          <li>
-            Which biomolecule is tested by Biuret test?<br />
-            A. Carbs B. Lipids <strong>C. Proteins ✅</strong> D. Nucleic acids
-          </li>
-          <li>
-            Primary role of calcium ions?<br />
-            <strong>A. Muscle/nerve ✅</strong> B. Oxygen transport C. Energy D. DNA replication
-          </li>
-        </ol>
+            <SectionCard icon={<Microscope className="h-5 w-5 text-indigo-600" />} title="STSE Connections" color="indigo">
+              <ul className="space-y-3 list-disc pl-5 marker:text-indigo-500">
+                <li>Understand the use of molecular biology in health, food tech, and pharmaceuticals</li>
+                <li>Appreciate the role of technologies like microscopy and DNA sequencing</li>
+              </ul>
+            </SectionCard>
+          </div>
 
-        <h3 className="font-semibold text-lg mt-6 mb-2">True or False</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Water helps organisms maintain stable temperature — <strong>True ✅</strong></li>
-          <li>All carbohydrates are water-soluble — <strong>False ❌</strong></li>
-          <li>Only proteins can act as enzymes — <strong>False ❌</strong></li>
-        </ul>
+          <div className="mt-8">
+            <SectionCard icon={<HelpCircle className="h-5 w-5 text-purple-600" />} title="Practice Questions" color="purple">
+              <Quiz quizData={quizData} />
+            </SectionCard>
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
 
-        <h3 className="font-semibold text-lg mt-6 mb-2">Open-ended</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Explain the importance of water in biological systems with examples.</li>
-          <li>How does lipid structure relate to its function in the body?</li>
-          <li>Discuss the ethical concerns about applying biological knowledge of molecules of life.</li>
-        </ul>
-      </section>
-    </main>
-  );
+function SectionCard({
+  title,
+  children,
+  icon,
+  color,
+}: {
+  title: string
+  children: React.ReactNode
+  icon: React.ReactNode
+  color: 'emerald' | 'amber' | 'sky' | 'rose' | 'indigo' | 'purple'
+}) {
+  const colorClasses = {
+    emerald: 'border-emerald-100 bg-emerald-50/50',
+    amber: 'border-amber-100 bg-amber-50/50',
+    sky: 'border-sky-100 bg-sky-50/50',
+    rose: 'border-rose-100 bg-rose-50/50',
+    indigo: 'border-indigo-100 bg-indigo-50/50',
+    purple: 'border-purple-100 bg-purple-50/50',
+  }
+
+  return (
+    <div className={`border rounded-xl p-5 backdrop-blur-sm ${colorClasses[color]}`}>
+      <div className="flex items-center gap-2 mb-3">
+        {icon}
+        <h2 className="text-lg font-semibold text-slate-800">{title}</h2>
+      </div>
+      <div>{children}</div>
+    </div>
+  )
 }
