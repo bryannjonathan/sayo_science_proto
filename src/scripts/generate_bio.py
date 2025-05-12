@@ -1,320 +1,333 @@
+#!/usr/bin/env python3
 import json
 import os
 import re
 import requests
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
 # --- Utility Functions ---
-def load_json_data(json_path):
-    """Loads data from a JSON file."""
+def load_json_data(json_path: Path):
+    """Loads JSON data from a file."""
     try:
-        with open(json_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print(f"Error: JSON file not found at {json_path}")
-        return None
-    except json.JSONDecodeError:
-        print(f"Error: Could not decode JSON from {json_path}")
+        return json.loads(json_path.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"Error loading JSON ({json_path}): {e}")
         return None
 
-def to_pascal_case(text):
-    """Converts a string to PascalCase by removing non-alphanumeric, splitting, and capitalizing."""
-    # Remove non-alphanumeric characters except spaces and hyphens (to split by them)
+def to_pascal_case(text: str) -> str:
+    """Converts a string to PascalCase."""
     text = re.sub(r'[^\w\s-]', '', text)
     return "".join(word.capitalize() for word in re.split(r'[\s-]+', text))
 
-def format_list_for_prompt(items_list, indent=0):
-    """Formats a Python list into a string suitable for inclusion in a prompt."""
-    if not items_list:
-        return "None"
-    prefix = " " * indent
-    return "\n".join([f"{prefix}- {item}" for item in items_list])
-
-def format_questions_for_prompt(questions_data, indent=0):
-    """Formats question data into a string for the prompt."""
-    prompt_parts = []
-    prefix = " " * indent
-
-    if questions_data.get("mcq"):
-        prompt_parts.append(f"{prefix}Multiple Choice Questions:")
-        for q in questions_data["mcq"]:
-            prompt_parts.append(f"{prefix}  - Question: {q.get('question')}")
-            prompt_parts.append(f"{prefix}    Options:")
-            for opt in q.get("options", []):
-                prompt_parts.append(f"{prefix}      - {opt.get('label')}: {opt.get('text')}")
-            prompt_parts.append(f"{prefix}    Correct Answer Label: {q.get('answer')}")
-        prompt_parts.append("") # Add a blank line for readability
-
-    if questions_data.get("true_false"):
-        prompt_parts.append(f"{prefix}True/False Questions:")
-        for q in questions_data["true_false"]:
-            prompt_parts.append(f"{prefix}  - Statement: {q.get('statement')}")
-            prompt_parts.append(f"{prefix}    Answer: {'True' if q.get('answer') else 'False'}")
-        prompt_parts.append("")
-
-    if questions_data.get("open_ended"):
-        prompt_parts.append(f"{prefix}Open-ended Questions:")
-        for q in questions_data["open_ended"]:
-            prompt_parts.append(f"{prefix}  - Question: {q.get('question')}")
-        prompt_parts.append("")
-
-    return "\n".join(prompt_parts)
-
-# --- Prompt Generation Function ---
-def generate_deepseek_page_creation_prompt(subchapter_data, topic_title, topic_overview, reference_tsx_structure_description):
-    """
-    Generates a detailed prompt for DeepSeek to create a TSX page.
-    """
-    subchapter_name = subchapter_data.get("name", "Untitled Subchapter")
-    subchapter_id = subchapter_data.get("generated_subtopic_id", "N/A")
-    
-    prompt = f"""
-You are an expert React developer specializing in creating educational content with Next.js and Tailwind CSS.
-Your task is to generate the complete TSX code for a Next.js page component.
-
-**Page Context:**
-- Main Topic: "{topic_title}"
-- Topic Overview: "{topic_overview}"
-- Current Subchapter: "{subchapter_name}" (ID: {subchapter_id})
-
-**Reference Structure and Styling:**
-The output TSX page should closely follow the structure, content organization, and Tailwind CSS styling of the provided reference example for "Molecules of Life" (page.tsx).
-Key structural elements to replicate:
-{reference_tsx_structure_description}
-
-**Specific Content for the "{subchapter_name}" Page:**
-
-1.  **Component Name:** The React component function should be named `{to_pascal_case(subchapter_name)}Page`.
-2.  **H1 Title:** The main heading (h1) should be: "🔬 {subchapter_id} {subchapter_name}".
-3.  **Introduction Paragraph:**
-    - Create an engaging introductory paragraph for the "{subchapter_name}" subchapter.
-    - It should connect to the main topic ("{topic_title}") and its overview.
-    - Briefly state what this specific subchapter will cover based on its learning objectives.
-    - Use the class `text-gray-700 mb-6` for the paragraph.
-
-4.  **Learning Objectives (🎯):**
-    - Heading: "🎯 Learning Objectives"
-    - List the following objectives as `<li>` items within a `ul` with classes `list-disc list-inside`:
-{format_list_for_prompt(subchapter_data.get("learning_objectives", []), indent=6)}
-
-5.  **Interactive Activities (🧪):** (Corresponds to "suggested_activities" in the JSON)
-    - Heading: "🧪 Interactive Activities"
-    - List the following activities as `<li>` items within a `ul` with classes `list-disc list-inside`.
-    - If an activity has sub-points or details in the JSON, try to represent them clearly.
-{format_list_for_prompt(subchapter_data.get("suggested_activities", []), indent=6)}
-
-6.  **Learning Outcomes (✅):**
-    - Heading: "✅ Learning Outcomes"
-    - Present the outcomes. If it's a list, use a `ul` with `list-disc list-inside`. If it's a single paragraph, use a `<p>` tag.
-    - Data:
-{format_list_for_prompt(subchapter_data.get("learning_outcomes", []), indent=6)}
-
-7.  **Values & Attitudes (🌱):**
-    - Heading: "🌱 Values & Attitudes"
-    - List the following as `<li>` items within a `ul` with classes `list-disc list-inside`:
-{format_list_for_prompt(subchapter_data.get("values_and_attitudes", []), indent=6)}
-
-8.  **STSE Connections (🔍):**
-    - Heading: "🔍 STSE Connections"
-    - List the following as `<li>` items within a `ul` with classes `list-disc list-inside`:
-{format_list_for_prompt(subchapter_data.get("stse_connections", []), indent=6)}
-
-9.  **Practice Questions (📝):**
-    - Main Heading: "📝 Practice Questions"
-    - Follow the exact formatting (including `<strong>`, `✅`, `❌`, `<br />`, and `&emsp;` for spacing between MCQ options) as seen in the "Molecules of Life" reference for all question types.
-
-    **Multiple Choice Questions:**
-    - Subheading: "Multiple Choice"
-    - Use an `<ol className="list-decimal list-inside space-y-2">`.
-    - Data:
-{format_questions_for_prompt(subchapter_data.get("questions", {}), indent=6)}
-
-    **True or False Questions:**
-    - Subheading: "True or False" (mt-6 mb-2 for the h3)
-    - Use a `<ul className="list-disc list-inside space-y-1">`.
-    - Data (already included in the formatted questions above, ensure it's placed under this subheading).
-
-    **Open-ended Questions:**
-    - Subheading: "Open-ended" (mt-6 mb-2 for the h3)
-    - Use a `<ul className="list-disc list-inside space-y-1">`.
-    - Data (already included in the formatted questions above, ensure it's placed under this subheading).
-
-
-**Output Requirements:**
-- Provide only the complete, runnable TSX code for the page component.
-- Ensure all JSX is valid and all necessary imports (like `React`) are included.
-- The main component should be a default export.
-- Adhere strictly to the Tailwind CSS classes used in the reference for consistent styling.
-- Make sure all provided data is accurately incorporated into the respective sections.
-- Escape any special characters in the data that might conflict with JSX (e.g., '<', '>').
-
-Generate the TSX code now.
-"""
-    return prompt.strip()
-
 def clean_deepseek_tsx_output(raw: str) -> str:
-    """
-    Cleans the TSX output returned from DeepSeek:
-    - Removes markdown fences (```tsx)
-    - Trims any intro or outro text
-    - Returns only clean, valid .tsx content
-    """
+    """Cleans up raw TSX output from the DeepSeek API."""
     if not raw:
         return ""
-
-    # Remove code fences if present
     raw = raw.strip()
+
+    # Remove markdown code blocks if present
     if raw.startswith("```tsx"):
         raw = raw[6:]
     if raw.endswith("```"):
         raw = raw[:-3]
+    raw = raw.strip()
 
-    # Trim leading text before `import React`
-    if "import React" in raw:
-        raw = raw[raw.index("import React"):]
+    # Attempt to trim to the main component export or first import
+    # This helps in case the model adds preamble text.
+    first_import_idx = raw.find("import ")
+    export_default_idx = raw.find("export default")
 
-    # Optionally trim after the last `export default`
-    if "export default" in raw:
-        last_export = raw.rindex("export default")
-        semi_index = raw.find(";", last_export)
-        if semi_index != -1:
-            raw = raw[:semi_index + 1]
+    if export_default_idx != -1:
+        start_idx = export_default_idx # Prioritize starting from export default
+        if first_import_idx != -1 and first_import_idx < export_default_idx:
+            start_idx = first_import_idx # But if an import comes before, start from there
+        raw = raw[start_idx:]
+    elif first_import_idx != -1:
+        raw = raw[first_import_idx:]
+    
+    # Trim any trailing characters after the component's closing brace or semicolon
+    # This assumes standard React functional component structure
+    last_brace_idx = raw.rfind("}")
+    if last_brace_idx != -1 and raw[last_brace_idx:].strip().startswith("}"):
+        raw = raw[:last_brace_idx + 1]
+    elif raw.endswith(';'):
+        raw = raw # Keep trailing semicolon if present
 
     return raw.strip()
 
-def call_deepseek_api(prompt_content, api_key, model_name="deepseek-chat"):
-    """
-    Calls the DeepSeek API and returns clean TSX code.
-    """
-    DEEPSEEK_API_URL = "https://api.deepseek.com/chat/completions"  # Update if needed
 
+def call_deepseek_api(prompt: str, api_key: str, model: str="deepseek-chat") -> str:
+    """Calls the DeepSeek API to generate TSX code."""
+    url = "https://api.deepseek.com/chat/completions"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
     }
-
     payload = {
-        "model": model_name,
-        "messages": [
-            {"role": "user", "content": prompt_content},
-        ],
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
         "max_tokens": 4000,
-        "temperature": 0.3,
+        "temperature": 0.3, # A lower temperature helps generate more consistent code
     }
-
     try:
-        print("Sending request to DeepSeek API...")
-        response = requests.post(DEEPSEEK_API_URL, headers=headers, json=payload, timeout=120)
-        response.raise_for_status()
-
-        data = response.json()
-        message = data.get("choices", [])[0].get("message", {}).get("content", "")
-
-        cleaned = clean_deepseek_tsx_output(message)
-        return cleaned
-
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Request failed: {e}")
-        if hasattr(e, 'response') and e.response is not None:
-            try:
-                print("Response content:", e.response.json())
-            except Exception:
-                print("Response content:", e.response.text)
-        return None
+        resp = requests.post(url, headers=headers, json=payload, timeout=120) # Increased timeout
+        resp.raise_for_status()
+        content = resp.json()["choices"][0]["message"]["content"]
+        return clean_deepseek_tsx_output(content)
     except Exception as e:
-        print(f"❌ Unexpected error: {e}")
+        print(f"❌ DeepSeek API error: {e}")
+        print(f"Problematic prompt starts with: {prompt[:500]}...") # Print more of the prompt
         return None
 
-# --- Main Script Logic (Modified) ---
+# --- Prompt Building Function ---
+def build_prompt(sub: dict, chapter_title: str, chapter_overview: str) -> str:
+    """Builds the prompt for the DeepSeek API based on subtopic data and design."""
+    name = sub.get("name", "Untitled")
+    sid  = sub.get("generated_subtopic_id", "Unknown")
+
+    # Helper to format list items for HTML, escaping single quotes and newlines
+    def format_list_items(items_list):
+        if not items_list:
+            return ""
+        formatted_items = []
+        for item in items_list:
+            # Perform replacements first
+            cleaned_item = item.replace('\'', '\\\'').replace('\\', '\\\\').replace('\n', ' ')
+            # Use .format() instead of f-string for this line to avoid backslash issue
+            formatted_items.append("                <li>{}</li>".format(cleaned_item))
+        return "\n".join(formatted_items)
+
+
+    learning_objectives_html = format_list_items(sub.get("learning_objectives", []))
+    suggested_activities_html = format_list_items(sub.get("suggested_activities", []))
+    learning_outcomes_html = format_list_items(sub.get("learning_outcomes", []))
+    values_and_attitudes_html = format_list_items(sub.get("values_and_attitudes", []))
+    stse_connections_html = format_list_items(sub.get("stse_connections", []))
+
+    # Prepare quizData as a stringified JSON for direct insertion into TSX
+    quiz_data = sub.get("questions", {})
+    mcq_questions = quiz_data.get("mcq", [])
+    true_false_questions = quiz_data.get("true_false", [])
+    open_ended_questions = quiz_data.get("open_ended", [])
+
+    formatted_mcq = []
+    for q in mcq_questions:
+        question_text = q['question'].replace('\'', '\\\'').replace('\\', '\\\\').replace('\n', ' ')
+        # Clean the option text before using it in the f-string
+        formatted_options = []
+        for opt in q['options']:
+             cleaned_opt_text = opt['text'].replace('\'', '\\\'').replace('\\', '\\\\').replace('\n', ' ')
+             formatted_options.append(f"{{ label: '{opt['label']}', text: '{cleaned_opt_text}' }}")
+        options_str = ", ".join(formatted_options)
+
+        formatted_mcq.append(f"""    {{
+      question: '{question_text}',
+      options: [{options_str}],
+      answer: '{q['answer']}',
+    }},""")
+
+    formatted_true_false = []
+    for q in true_false_questions:
+        statement_text = q['statement'].replace('\'', '\\\'').replace('\\', '\\\\').replace('\n', ' ')
+        formatted_true_false.append(f"""    {{ statement: '{statement_text}', answer: {str(q['answer']).lower()} }},""")
+
+    formatted_open_ended = []
+    for q in open_ended_questions:
+        question_text = q['question'].replace('\'', '\\\'').replace('\\', '\\\\').replace('\n', ' ')
+        formatted_open_ended.append(f"""    {{
+      question: '{question_text}',
+    }},""")
+
+    # Construct quiz_data_str_block using .format() to avoid raw backslashes in the triple-quoted string
+    quiz_data_str_block = """const quizData: QuizData = {{
+  mcq: [
+{}
+  ],
+  true_false: [
+{}
+  ],
+  open_ended: [
+{}
+  ],
+}};""".format(
+        '\n'.join(formatted_mcq),
+        '\n'.join(formatted_true_false),
+        '\n'.join(formatted_open_ended)
+    )
+
+
+    # Pascal case for component name
+    component_name = to_pascal_case(name) + "Page"
+    
+    # Ensure chapter_overview is safe for embedding in string literal within a <p> tag
+    safe_chapter_overview_for_tsx = chapter_overview.replace('"', '\\"').replace('\n', ' ').replace('\'', '\\\'')
+
+
+    # Construct the main prompt string using f-string for the overall structure,
+    # incorporating the requested changes for the generated TSX.
+    prompt_text = f"""
+You are a Next.js + Tailwind CSS expert. Your task is to generate a complete TSX page for the subtopic "{name}" (ID: {sid}) under the main topic "{chapter_title}".
+The overall chapter overview is: "{safe_chapter_overview_for_tsx}".
+
+Adhere strictly to the following design structure, component usage, and styling. Ensure that the generated TSX code is clean, well-formatted, and does not contain any comments or extraneous text beyond the actual TSX.
+
+1.  **Add `'use client'` at the very beginning of the file.**
+2.  **Component Name**: `{component_name}`
+3.  **Imports**:
+    * `BackButton` from `@/components/BackButton`; // Note: Default import
+    * `QuizSection` from `@/components/QuizSection`; // Note: Default import
+    * `SectionCard` from `@/components/SectionCard`; // Note: Default import
+    * All necessary icons from `lucide-react`: `BookOpen`, `Target`, `Lightbulb`, `CheckSquare`, `Heart`, `Microscope`, `HelpCircle`. // Note: Named imports for icons
+    * Do NOT include `import React from 'react';` as it's implicitly handled in Next.js.
+4.  **Quiz Data Definition**:
+    * Define the `quizData` variable *outside* the main component function, at the top level of the file.
+    * The content of `quizData` should be exactly this structure (ensure all string values are properly escaped for single quotes):
+```tsx
+{quiz_data_str_block}
+```
+5.  **Page Structure (within the `export default function {component_name}()`):**
+    * Use the imported `SectionCard` component. Do NOT create a new one.
+    * Use the imported `QuizSection` component for the questions section.
+    ```tsx
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="px-4 py-4 max-w-5xl mx-auto">
+          <BackButton />
+        </div>
+      </header>
+
+      <main className="px-4 py-8 max-w-5xl mx-auto">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 rounded-lg bg-teal-100 text-teal-700">
+            <BookOpen className="h-6 w-6" />
+          </div>
+          <h1 className="text-3xl font-bold text-slate-800">
+            {name}
+          </h1>
+        </div>
+
+        <div className="bg-white/70 backdrop-blur-sm border border-teal-100 rounded-xl p-6 mb-8">
+          <p className="text-slate-700 leading-relaxed">{safe_chapter_overview_for_tsx}</p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          <SectionCard icon={{<Target className="h-5 w-5 text-emerald-600" />}} title="Learning Objectives" color="emerald">
+            <ul className="space-y-3 list-disc pl-5 marker:text-emerald-500">
+{learning_objectives_html}
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={{<Lightbulb className="h-5 w-5 text-amber-600" />}} title="Interactive Activities" color="amber">
+            <ul className="space-y-3 list-disc pl-5 marker:text-amber-500">
+{suggested_activities_html}
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={{<CheckSquare className="h-5 w-5 text-sky-600" />}} title="Learning Outcomes" color="sky">
+            <ul className="space-y-3 list-disc pl-5 marker:text-sky-500">
+{learning_outcomes_html}
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={{<Heart className="h-5 w-5 text-rose-600" />}} title="Values & Attitudes" color="rose">
+            <ul className="space-y-3 list-disc pl-5 marker:text-rose-500">
+{values_and_attitudes_html}
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={{<Microscope className="h-5 w-5 text-indigo-600" />}} title="STSE Connections" color="indigo">
+            <ul className="space-y-3 list-disc pl-5 marker:text-indigo-500">
+{stse_connections_html}
+            </ul>
+          </SectionCard>
+        </div>
+
+        <div className="mt-8">
+          <SectionCard icon={{<HelpCircle className="h-5 w-5 text-purple-600" />}} title="Practice Questions" color="purple">
+            <QuizSection quizData={{quizData}} /> 
+          </SectionCard>
+        </div>
+      </main>
+    </div>
+    ```
+
+Return ONLY valid .tsx code. Do NOT include any markdown code blocks (\`\`\`tsx) in the final output, only the raw TSX code. Do NOT include comments (\`/* ... */\` or \`// ...\`) in the final TSX output.
+""".strip()
+
+    return prompt_text
+
+# --- Main Script ---
 def main():
-    print("Starting TSX Page Generation Script...")
-
-    # 🔐 Load DeepSeek API key
-    deepseek_api_key = os.getenv("DEEPSEEK_API_KEY")
-    if not deepseek_api_key:
-        print("Error: Deep Seek API Key is required.")
-
-    # 📄 Path to JSON data
-    json_data_path = os.path.join(os.path.dirname(__file__), "..", "data", "bio_with_questions.json")
-
-    # 📁 Output directory inside ./scripts/output
-    output_dir = os.path.join(os.path.dirname(__file__), "output")
-    os.makedirs(output_dir, exist_ok=True)
-
-    # 📚 Load curriculum data
-    full_data = load_json_data(json_data_path)
-    if not full_data:
+    """Main function to load data, build prompts, call API, and save files."""
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    if not api_key:
+        print("❌ Set DEEPSEEK_API_KEY in your environment.")
         return
 
-    # 📑 Reference TSX structure description
-    reference_tsx_structure = """
-    - A main React functional component, default exported.
-    - Uses `<main className="max-w-5xl mx-auto p-6">` as the root container.
-    - Sections (`<section className="mb-8">`) for:
-        - Learning Objectives (h2, ul)
-        - Interactive Activities (h2, ul)
-        - Learning Outcomes (h2, p or ul)
-        - Values & Attitudes (h2, ul)
-        - STSE Connections (h2, ul)
-        - Practice Questions (h2 for main, h3 for sub-types like MCQ, True/False, Open-ended)
-    - Specific formatting for questions:
-        - MCQs in `<ol>`, with options including correct answer marked with `<strong>` and `✅`. ` ` for spacing.
-        - True/False in `<ul>`, with answers marked `<strong>True ✅</strong>` or `<strong>False ❌</strong>`.
-        - Open-ended questions in `<ul>`.
-    - Tailwind CSS is used for all styling.
-    """
+    # Construct the path to the JSON data file
+    data_file = Path(__file__).parent.parent / "data" / "bio_with_questions.json"
+    full = load_json_data(data_file)
+    if not full:
+        return
 
-    try:
-        # 🧠 Access Biology compulsory topics
-        compulsory_parts = full_data.get("Secondary 4-6", {}).get("Biology", {}).get("compulsoryPart", [])
-        if not compulsory_parts:
-            print("Error: 'compulsoryPart' not found or empty in JSON.")
-            return
+    all_chapters = []
+    
+    # Get compulsory parts
+    compulsory_chapters = full.get("Secondary 4-6", {}).get("Biology", {}).get("compulsoryPart", [])
+    all_chapters.extend(compulsory_chapters)
+    
+    # Get elective parts if they exist
+    elective_part = full.get("Secondary 4-6", {}).get("Biology", {}).get("electivePart", {})
+    if elective_part and "topics" in elective_part:
+        all_chapters.extend(elective_part["topics"])
 
-        for topic_data in compulsory_parts:
-            topic_title = topic_data.get("title", "Untitled Topic")
-            topic_overview = topic_data.get("overview", "Overview of the topic.")
-            subtopics_list = topic_data.get("subtopics", [])
 
-            if not subtopics_list or len(subtopics_list) < 2:
-                print(f"⚠️ Skipping topic '{topic_title}' — less than 2 subtopics.")
+    if not all_chapters:
+        print("❌ JSON structure not found for chapters.")
+        return
+
+    # Define the output base directory
+    out_base = Path(__file__).parent / "output"
+    
+    # Process all chapters and their subtopics
+    for chap in all_chapters[]:
+        chap_title    = chap.get("title", "")
+        chap_overview = chap.get("overview", "")
+        print(f"Processing Chapter: {chap_title}")
+        
+        subtopics_to_process = chap.get("subtopics", [])
+        if not subtopics_to_process:
+            print(f"  No subtopics found for chapter: {chap_title}")
+            continue
+
+        for sub in subtopics_to_process:
+            sid  = sub.get("generated_subtopic_id", "unknown")
+            name = sub.get("name", "Untitled")
+            print(f"  🚀 Generating page for {sid} – {name}…")
+
+            prompt = build_prompt(sub, chap_title, chap_overview)
+            tsx    = call_deepseek_api(prompt, api_key)
+            if not tsx:
+                print(f"  ❌ Skipped {sid}")
                 continue
 
-            # print(f"⏩ Skipping first subchapter: {subtopics_list[0]['generated_subtopic_id']} - {subtopics_list[0]['name']}")
+            # Add 'use client' at the beginning of the generated TSX
+            final_tsx = "'use client';\n\n" + tsx
 
-            for subchapter_to_process in subtopics_list[1:]:
-                subchapter_name = subchapter_to_process.get('name', 'UntitledSubchapter')
-                subchapter_id = subchapter_to_process.get("generated_subtopic_id", "Unknown")
+            # Create the destination directory for the subtopic
+            dest = out_base / sid
+            dest.mkdir(parents=True, exist_ok=True)
+            file = dest / "page.tsx"
+            
+            # Write the generated TSX code to the file
+            try:
+                file.write_text(final_tsx, encoding="utf-8")
+                print(f"  ✅ Saved {sid}/page.tsx")
+            except Exception as e:
+                print(f"  ❌ Error saving {sid}/page.tsx: {e}")
 
-                print(f"\n🚀 Generating TSX for: {subchapter_id} - {subchapter_name}")
-
-                prompt_content = generate_deepseek_page_creation_prompt(
-                    subchapter_to_process,
-                    topic_title,
-                    topic_overview,
-                    reference_tsx_structure
-                )
-
-                tsx_code = call_deepseek_api(prompt_content, deepseek_api_key)
-
-                if tsx_code:
-                    out_dir = os.path.join(output_dir, subchapter_id)
-                    os.makedirs(out_dir, exist_ok=True)
-                    out_path = os.path.join(out_dir, "page.tsx")
-
-                    with open(out_path, 'w', encoding='utf-8') as f:
-                        f.write(tsx_code)
-
-                    print(f"✅ Saved: {out_path}")
-                else:
-                    print(f"❌ Failed to generate TSX for: {subchapter_id}")
-
-    except (IndexError, TypeError, AttributeError) as e:
-        print(f"❌ Error processing JSON data: {e}. Please check your JSON file structure.")
-    except Exception as e:
-        print(f"❌ An unexpected error occurred in main: {e}")
-
-main()
-
+if __name__ == "__main__":
+    main()
