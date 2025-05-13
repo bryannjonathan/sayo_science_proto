@@ -94,7 +94,7 @@ export default function EarthsCharacteristicsPage() {
             <div className="p-2 rounded-lg bg-teal-100 text-teal-700">
               <BookOpen className="h-6 w-6" />
             </div>
-            <h1 className="text-3xl font-bold text-slate-800">Primary1-S2-T0 Earth’s Characteristics</h1>
+            <h1 className="text-3xl font-bold text-slate-800">Earth’s Characteristics</h1>
           </div>
 
           <div className="bg-white/70 backdrop-blur-sm border border-teal-100 rounded-xl p-6 mb-8">

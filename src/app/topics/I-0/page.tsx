@@ -92,7 +92,7 @@ export default function MoleculesOfLifePage() {
             <div className="p-2 rounded-lg bg-teal-100 text-teal-700">
               <BookOpen className="h-6 w-6" />
             </div>
-            <h1 className="text-3xl font-bold text-slate-800">Secondary1-Topic Molecules of Life</h1>
+            <h1 className="text-3xl font-bold text-slate-800">Molecules of Life</h1>
           </div>
 
           <div className="bg-white/70 backdrop-blur-sm border border-teal-100 rounded-xl p-6 mb-8">
