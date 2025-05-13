@@ -1,98 +1,149 @@
-import React from 'react';
+'use client';
+
 import BackButton from '@/components/BackButton';
+import QuizSection from '@/components/QuizSection';
+import SectionCard from '@/components/SectionCard';
+import { BookOpen, Target, Lightbulb, CheckSquare, Heart, Microscope, HelpCircle } from 'lucide-react';
 
-const ScienceInquiryProcessesPage = () => {
-  return (
-    <main className="max-w-5xl mx-auto p-6">
-      <BackButton />
-      <h1 className="text-3xl font-bold mb-4">📚 Primary3-S3-T0 Science inquiry processes</h1>
-      <p className="text-gray-700 mb-6">
-        Welcome to our lesson on Science Inquiry Processes! In this topic, we'll explore how scientists ask questions and find answers. 
-        You'll learn about the steps scientists follow and different ways they investigate the world around us. 
-        Get ready to think like a scientist!
-      </p>
-
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🎯 Learning Objectives</h2>
-        <ul className="list-disc list-inside">
-          <li>3SA1: Be aware of science inquiry processes and steps</li>
-          <li>3SA2: Be aware of the different types of science inquiry (e.g. classifying, pattern seeking, modeling)</li>
-        </ul>
-      </section>
-
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4">📝 Practice Questions</h2>
-
-        <h3 className="font-semibold text-lg mb-2">Multiple Choice</h3>
-        <ol className="list-decimal list-inside space-y-2">
-          <li>
-            What is the first step in a science inquiry process? 科學探究過程的第一步是什麼？
-            <br />
-            <strong>A. Asking a question 提出問題 ✅</strong> B. Making a prediction 做出預測 C. Conducting an experiment 進行實驗 D. Drawing conclusions 得出結論
-          </li>
-          <li>
-            Which of the following is a type of science inquiry? 以下哪一項是科學探究的類型？
-            <br />
-            <strong>A. Classifying 分類 ✅</strong> B. Singing 唱歌 C. Dancing 跳舞 D. Painting 繪畫
-          </li>
-          <li>
-            What do scientists do after they observe something? 科學家在觀察到某事物後會做什麼？
-            <br />
-            <strong>A. Ask a question 提出問題 ✅</strong> B. Ignore it 忽略它 C. Forget about it 忘記它 D. Laugh 大笑
-          </li>
-          <li>
-            Which step comes after making a prediction in the science inquiry process? 在科學探究過程中，做出預測後是哪一步？
-            <br />
-            <strong>A. Conducting an experiment 進行實驗 ✅</strong> B. Asking a question 提出問題 C. Drawing conclusions 得出結論 D. Sharing results 分享結果
-          </li>
-          <li>
-            What is the purpose of classifying in science? 科學中分類的目的是什麼？
-            <br />
-            <strong>A. To organize things into groups 將事物分組 ✅</strong> B. To make things messy 使事物混亂 C. To hide things 隱藏事物 D. To break things 破壞事物
-          </li>
-          <li>
-            Which of the following is an example of pattern seeking? 以下哪一項是尋找模式的例子？
-            <br />
-            <strong>A. Noticing that plants grow taller with more sunlight 注意到植物在有更多陽光時長得更高 ✅</strong> B. Counting the number of leaves on a plant 計算植物上的葉子數量 C. Drawing a picture of a plant 畫一幅植物的圖畫 D. Watering a plant 給植物澆水
-          </li>
-          <li>
-            What is modeling in science? 科學中的建模是什麼？
-            <br />
-            <strong>A. Creating a representation of something 創建某事物的表示 ✅</strong> B. Building a toy 建造一個玩具 C. Drawing a random picture 畫一幅隨機的圖畫 D. Writing a story 寫一個故事
-          </li>
-          <li>
-            Why is it important to share results in science? 為什麼在科學中分享結果很重要？
-            <br />
-            <strong>A. So others can learn from it 以便其他人可以從中學習 ✅</strong> B. To keep it a secret 保密 C. To make it confusing 使其混淆 D. To forget about it 忘記它
-          </li>
-          <li>
-            What is the last step in the science inquiry process? 科學探究過程的最後一步是什麼？
-            <br />
-            <strong>A. Drawing conclusions 得出結論 ✅</strong> B. Asking a question 提出問題 C. Making a prediction 做出預測 D. Observing 觀察
-          </li>
-          <li>
-            Which of the following is NOT a science inquiry process? 以下哪一項不是科學探究過程？
-            <br />
-            <strong>A. Guessing randomly 隨機猜測 ✅</strong> B. Classifying 分類 C. Pattern seeking 尋找模式 D. Modeling 建模
-          </li>
-        </ol>
-
-        <h3 className="font-semibold text-lg mt-6 mb-2">True or False</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Asking a question is the first step in the science inquiry process. 提出問題是科學探究過程的第一步。 — <strong>True ✅</strong></li>
-          <li>Singing is a type of science inquiry. 唱歌是科學探究的一種類型。 — <strong>False ❌</strong></li>
-          <li>Scientists always share their results with others. 科學家總是與他人分享他們的結果。 — <strong>True ✅</strong></li>
-        </ul>
-
-        <h3 className="font-semibold text-lg mt-6 mb-2">Open-ended</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Describe one step in the science inquiry process. 描述科學探究過程中的一個步驟。</li>
-          <li>Give an example of classifying in science. 舉一個科學中分類的例子。</li>
-          <li>Why is it important to follow steps in a science inquiry? 為什麼在科學探究中遵循步驟很重要？</li>
-        </ul>
-      </section>
-    </main>
-  );
+const quizData = {
+  mcq: [
+    {
+      question: 'What is the first step in a science inquiry process? 科學探究過程的第一步是什麼？',
+      options: [{ label: 'A', text: 'Asking a question 提出問題' }, { label: 'B', text: 'Making a prediction 做出預測' }, { label: 'C', text: 'Conducting an experiment 進行實驗' }, { label: 'D', text: 'Drawing conclusions 得出結論' }],
+      answer: 'A',
+    },
+    {
+      question: 'Which of the following is a type of science inquiry? 以下哪一項是科學探究的類型？',
+      options: [{ label: 'A', text: 'Classifying 分類' }, { label: 'B', text: 'Singing 唱歌' }, { label: 'C', text: 'Dancing 跳舞' }, { label: 'D', text: 'Painting 繪畫' }],
+      answer: 'A',
+    },
+    {
+      question: 'What do scientists do after they observe something? 科學家在觀察到某事物後會做什麼？',
+      options: [{ label: 'A', text: 'Ask a question 提出問題' }, { label: 'B', text: 'Ignore it 忽略它' }, { label: 'C', text: 'Forget about it 忘記它' }, { label: 'D', text: 'Laugh 大笑' }],
+      answer: 'A',
+    },
+    {
+      question: 'Which step comes after making a prediction in the science inquiry process? 在科學探究過程中，做出預測後是哪一步？',
+      options: [{ label: 'A', text: 'Conducting an experiment 進行實驗' }, { label: 'B', text: 'Asking a question 提出問題' }, { label: 'C', text: 'Drawing conclusions 得出結論' }, { label: 'D', text: 'Sharing results 分享結果' }],
+      answer: 'A',
+    },
+    {
+      question: 'What is the purpose of classifying in science? 科學中分類的目的是什麼？',
+      options: [{ label: 'A', text: 'To organize things into groups 將事物分組' }, { label: 'B', text: 'To make things messy 使事物混亂' }, { label: 'C', text: 'To hide things 隱藏事物' }, { label: 'D', text: 'To break things 破壞事物' }],
+      answer: 'A',
+    },
+    {
+      question: 'Which of the following is an example of pattern seeking? 以下哪一項是尋找模式的例子？',
+      options: [{ label: 'A', text: 'Noticing that plants grow taller with more sunlight 注意到植物在有更多陽光時長得更高' }, { label: 'B', text: 'Counting the number of leaves on a plant 計算植物上的葉子數量' }, { label: 'C', text: 'Drawing a picture of a plant 畫一幅植物的圖畫' }, { label: 'D', text: 'Watering a plant 給植物澆水' }],
+      answer: 'A',
+    },
+    {
+      question: 'What is modeling in science? 科學中的建模是什麼？',
+      options: [{ label: 'A', text: 'Creating a representation of something 創建某事物的表示' }, { label: 'B', text: 'Building a toy 建造一個玩具' }, { label: 'C', text: 'Drawing a random picture 畫一幅隨機的圖畫' }, { label: 'D', text: 'Writing a story 寫一個故事' }],
+      answer: 'A',
+    },
+    {
+      question: 'Why is it important to share results in science? 為什麼在科學中分享結果很重要？',
+      options: [{ label: 'A', text: 'So others can learn from it 以便其他人可以從中學習' }, { label: 'B', text: 'To keep it a secret 保密' }, { label: 'C', text: 'To make it confusing 使其混淆' }, { label: 'D', text: 'To forget about it 忘記它' }],
+      answer: 'A',
+    },
+    {
+      question: 'What is the last step in the science inquiry process? 科學探究過程的最後一步是什麼？',
+      options: [{ label: 'A', text: 'Drawing conclusions 得出結論' }, { label: 'B', text: 'Asking a question 提出問題' }, { label: 'C', text: 'Making a prediction 做出預測' }, { label: 'D', text: 'Observing 觀察' }],
+      answer: 'A',
+    },
+    {
+      question: 'Which of the following is NOT a science inquiry process? 以下哪一項不是科學探究過程？',
+      options: [{ label: 'A', text: 'Guessing randomly 隨機猜測' }, { label: 'B', text: 'Classifying 分類' }, { label: 'C', text: 'Pattern seeking 尋找模式' }, { label: 'D', text: 'Modeling 建模' }],
+      answer: 'A',
+    },
+  ],
+  true_false: [
+    { statement: 'Asking a question is the first step in the science inquiry process. 提出問題是科學探究過程的第一步。', answer: true },
+    { statement: 'Singing is a type of science inquiry. 唱歌是科學探究的一種類型。', answer: false },
+    { statement: 'Scientists always share their results with others. 科學家總是與他人分享他們的結果。', answer: true },
+  ],
+  open_ended: [
+    {
+      question: 'Describe one step in the science inquiry process. 描述科學探究過程中的一個步驟。',
+    },
+    {
+      question: 'Give an example of classifying in science. 舉一個科學中分類的例子。',
+    },
+    {
+      question: 'Why is it important to follow steps in a science inquiry? 為什麼在科學探究中遵循步驟很重要？',
+    },
+  ],
 };
 
-export default ScienceInquiryProcessesPage;
+export default function ScienceInquiryProcessesPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="px-4 py-4 max-w-5xl mx-auto">
+          <BackButton />
+        </div>
+      </header>
+
+      <main className="px-4 py-8 max-w-5xl mx-auto">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 rounded-lg bg-teal-100 text-teal-700">
+            <BookOpen className="h-6 w-6" />
+          </div>
+          <h1 className="text-3xl font-bold text-slate-800">
+             Science inquiry processes
+          </h1>
+        </div>
+
+        <div className="bg-white/70 backdrop-blur-sm border border-teal-100 rounded-xl p-6 mb-8">
+          <p className="text-slate-700 leading-relaxed">
+            Science inquiry processes help us explore and understand the natural world through systematic steps. Students will learn about observation, questioning, and experimentation as fundamental scientific skills.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          <SectionCard icon={<Target className="h-5 w-5 text-emerald-600" />} title="Learning Objectives" color="emerald">
+            <ul className="space-y-3 list-disc pl-5 marker:text-emerald-500">
+                <li>Be aware of science inquiry processes and steps</li>
+                <li>Be aware of the different types of science inquiry (e.g. classifying, pattern seeking, modeling)</li>
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={<Lightbulb className="h-5 w-5 text-amber-600" />} title="Interactive Activities" color="amber">
+            <ul className="space-y-3 list-disc pl-5 marker:text-amber-500">
+              <li>Classify different leaves based on their shapes and sizes</li>
+              <li>Observe and record patterns in plant growth under different conditions</li>
+              <li>Create simple models to represent scientific concepts</li>
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={<CheckSquare className="h-5 w-5 text-sky-600" />} title="Learning Outcomes" color="sky">
+            <p className="text-slate-700 leading-relaxed">
+              Students will understand the scientific method and apply basic inquiry skills to explore natural phenomena.
+            </p>
+          </SectionCard>
+
+          <SectionCard icon={<Heart className="h-5 w-5 text-rose-600" />} title="Values & Attitudes" color="rose">
+            <ul className="space-y-3 list-disc pl-5 marker:text-rose-500">
+              <li>Curiosity about the natural world</li>
+              <li>Respect for evidence-based conclusions</li>
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={<Microscope className="h-5 w-5 text-indigo-600" />} title="STSE Connections" color="indigo">
+            <ul className="space-y-3 list-disc pl-5 marker:text-indigo-500">
+              <li>Understanding how scientific methods help solve real-world problems</li>
+              <li>Recognizing the role of inquiry in technological advancements</li>
+            </ul>
+          </SectionCard>
+        </div>
+
+        <div className="mt-8">
+          <SectionCard icon={<HelpCircle className="h-5 w-5 text-purple-600" />} title="Practice Questions" color="purple">
+            <QuizSection quizData={quizData} />
+          </SectionCard>
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -293,7 +293,7 @@ def main():
     out_base = Path(__file__).parent / "output"
     
     # Process all chapters and their subtopics
-    for chap in all_chapters[]:
+    for chap in all_chapters:
         chap_title    = chap.get("title", "")
         chap_overview = chap.get("overview", "")
         print(f"Processing Chapter: {chap_title}")

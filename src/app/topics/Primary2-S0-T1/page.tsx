@@ -1,97 +1,149 @@
-import React from 'react';
-import BackButton from '@/components/BackButton';
+'use client';
 
-const StructuresOfLivingThingsPage = () => {
-  return (
-    <main className="max-w-5xl mx-auto p-6">
-      <BackButton />
-      <h1 className="text-3xl font-bold mb-4">📚 Primary2-S0-T1 Structures of living things</h1>
-      <p className="text-gray-700 mb-6">
-        In this topic, we will learn about the different parts of plants and their functions. 
-        We'll discover how leaves make food, how roots help the plant stay in the ground and get water, 
-        and how stems support the plant and transport important things it needs to grow.
-      </p>
+import BackButton from '@/components/BackButton'
+import QuizSection from '@/components/QuizSection'
+import SectionCard from '@/components/SectionCard'
+import { BookOpen, Target, Lightbulb, CheckSquare, Heart, Microscope, HelpCircle } from 'lucide-react'
 
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">🎯 Learning Objectives</h2>
-        <ul className="list-disc list-inside">
-          <li>2LB2: State the major structures in plants and their functions (leaves make food, roots absorb water and nutrients and anchor plants, stems support the plant and transport water, food and nutrients)</li>
-        </ul>
-      </section>
-
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4">📝 Practice Questions</h2>
-
-        <h3 className="font-semibold text-lg mb-2">Multiple Choice</h3>
-        <ol className="list-decimal list-inside space-y-2">
-          <li>
-            Which part of the plant makes food? 植物的哪個部分負責製造食物?
-            <br />
-            <strong>A. Leaves 葉子 ✅</strong> B. Roots 根 C. Stem 莖 D. Flower 花
-          </li>
-          <li>
-            What is the function of roots? 根的功能是什麼?
-            <br />
-            A. Make food 製造食物 <strong>B. Absorb water and nutrients 吸收水分和養分 ✅</strong> C. Support the plant 支持植物 D. Transport food 運輸食物
-          </li>
-          <li>
-            Which part of the plant transports water and nutrients? 植物的哪個部分負責運輸水分和養分?
-            <br />
-            A. Leaves 葉子 B. Roots 根 <strong>C. Stem 莖 ✅</strong> D. Flower 花
-          </li>
-          <li>
-            What do leaves need to make food? 葉子需要什麼來製造食物?
-            <br />
-            <strong>A. Water and sunlight 水和陽光 ✅</strong> B. Soil and air 土壤和空氣 C. Roots and stem 根和莖 D. Flowers and fruits 花和果實
-          </li>
-          <li>
-            Which part of the plant anchors it to the ground? 植物的哪個部分將它固定在地上?
-            <br />
-            A. Leaves 葉子 <strong>B. Roots 根 ✅</strong> C. Stem 莖 D. Flower 花
-          </li>
-          <li>
-            What is the main function of the stem? 莖的主要功能是什麼?
-            <br />
-            A. Make food 製造食物 B. Absorb water 吸收水分 <strong>C. Support the plant and transport water and nutrients 支持植物並運輸水分和養分 ✅</strong> D. Produce flowers 產生花朵
-          </li>
-          <li>
-            Which part of the plant is usually green and flat? 植物的哪個部分通常是綠色且扁平的?
-            <br />
-            A. Roots 根 B. Stem 莖 <strong>C. Leaves 葉子 ✅</strong> D. Flower 花
-          </li>
-          <li>
-            What do roots absorb from the soil? 根從土壤中吸收什麼?
-            <br />
-            A. Food 食物 <strong>B. Water and nutrients 水分和養分 ✅</strong> C. Sunlight 陽光 D. Air 空氣
-          </li>
-          <li>
-            Which part of the plant is often found underground? 植物的哪個部分通常在地下?
-            <br />
-            A. Leaves 葉子 <strong>B. Roots 根 ✅</strong> C. Stem 莖 D. Flower 花
-          </li>
-          <li>
-            What is the function of leaves? 葉子的功能是什麼?
-            <br />
-            A. Anchor the plant 固定植物 <strong>B. Make food 製造食物 ✅</strong> C. Transport water 運輸水分 D. Produce seeds 產生種子
-          </li>
-        </ol>
-
-        <h3 className="font-semibold text-lg mt-6 mb-2">True or False</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Leaves are the part of the plant that makes food. 葉子是植物製造食物的部分。 — <strong>True ✅</strong></li>
-          <li>Roots help the plant to stand upright. 根幫助植物直立。 — <strong>False ❌</strong></li>
-          <li>The stem transports water and nutrients in the plant. 莖在植物中運輸水分和養分。 — <strong>True ✅</strong></li>
-        </ul>
-
-        <h3 className="font-semibold text-lg mt-6 mb-2">Open-ended</h3>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Name two functions of the roots. 列出根的兩個功能。</li>
-          <li>Why are leaves important to a plant? 為什麼葉子對植物很重要?</li>
-          <li>What would happen if a plant did not have a stem? 如果植物沒有莖會發生什麼?</li>
-        </ul>
-      </section>
-    </main>
-  );
+const quizData = {
+  mcq: [
+    {
+      question: 'Which part of the plant makes food? 植物的哪個部分負責製造食物?',
+      options: [{ label: 'A', text: 'Leaves 葉子' }, { label: 'B', text: 'Roots 根' }, { label: 'C', text: 'Stem 莖' }, { label: 'D', text: 'Flower 花' }],
+      answer: 'A',
+    },
+    {
+      question: 'What is the function of roots? 根的功能是什麼?',
+      options: [{ label: 'A', text: 'Make food 製造食物' }, { label: 'B', text: 'Absorb water and nutrients 吸收水分和養分' }, { label: 'C', text: 'Support the plant 支持植物' }, { label: 'D', text: 'Transport food 運輸食物' }],
+      answer: 'B',
+    },
+    {
+      question: 'Which part of the plant transports water and nutrients? 植物的哪個部分負責運輸水分和養分?',
+      options: [{ label: 'A', text: 'Leaves 葉子' }, { label: 'B', text: 'Roots 根' }, { label: 'C', text: 'Stem 莖' }, { label: 'D', text: 'Flower 花' }],
+      answer: 'C',
+    },
+    {
+      question: 'What do leaves need to make food? 葉子需要什麼來製造食物?',
+      options: [{ label: 'A', text: 'Water and sunlight 水和陽光' }, { label: 'B', text: 'Soil and air 土壤和空氣' }, { label: 'C', text: 'Roots and stem 根和莖' }, { label: 'D', text: 'Flowers and fruits 花和果實' }],
+      answer: 'A',
+    },
+    {
+      question: 'Which part of the plant anchors it to the ground? 植物的哪個部分將它固定在地上?',
+      options: [{ label: 'A', text: 'Leaves 葉子' }, { label: 'B', text: 'Roots 根' }, { label: 'C', text: 'Stem 莖' }, { label: 'D', text: 'Flower 花' }],
+      answer: 'B',
+    },
+    {
+      question: 'What is the main function of the stem? 莖的主要功能是什麼?',
+      options: [{ label: 'A', text: 'Make food 製造食物' }, { label: 'B', text: 'Absorb water 吸收水分' }, { label: 'C', text: 'Support the plant and transport water and nutrients 支持植物並運輸水分和養分' }, { label: 'D', text: 'Produce flowers 產生花朵' }],
+      answer: 'C',
+    },
+    {
+      question: 'Which part of the plant is usually green and flat? 植物的哪個部分通常是綠色且扁平的?',
+      options: [{ label: 'A', text: 'Roots 根' }, { label: 'B', text: 'Stem 莖' }, { label: 'C', text: 'Leaves 葉子' }, { label: 'D', text: 'Flower 花' }],
+      answer: 'C',
+    },
+    {
+      question: 'What do roots absorb from the soil? 根從土壤中吸收什麼?',
+      options: [{ label: 'A', text: 'Food 食物' }, { label: 'B', text: 'Water and nutrients 水分和養分' }, { label: 'C', text: 'Sunlight 陽光' }, { label: 'D', text: 'Air 空氣' }],
+      answer: 'B',
+    },
+    {
+      question: 'Which part of the plant is often found underground? 植物的哪個部分通常在地下?',
+      options: [{ label: 'A', text: 'Leaves 葉子' }, { label: 'B', text: 'Roots 根' }, { label: 'C', text: 'Stem 莖' }, { label: 'D', text: 'Flower 花' }],
+      answer: 'B',
+    },
+    {
+      question: 'What is the function of leaves? 葉子的功能是什麼?',
+      options: [{ label: 'A', text: 'Anchor the plant 固定植物' }, { label: 'B', text: 'Make food 製造食物' }, { label: 'C', text: 'Transport water 運輸水分' }, { label: 'D', text: 'Produce seeds 產生種子' }],
+      answer: 'B',
+    },
+  ],
+  true_false: [
+    { statement: 'Leaves are the part of the plant that makes food. 葉子是植物製造食物的部分。', answer: true },
+    { statement: 'Roots help the plant to stand upright. 根幫助植物直立。', answer: false },
+    { statement: 'The stem transports water and nutrients in the plant. 莖在植物中運輸水分和養分。', answer: true },
+  ],
+  open_ended: [
+    {
+      question: 'Name two functions of the roots. 列出根的兩個功能。',
+    },
+    {
+      question: 'Why are leaves important to a plant? 為什麼葉子對植物很重要?',
+    },
+    {
+      question: 'What would happen if a plant did not have a stem? 如果植物沒有莖會發生什麼?',
+    },
+  ],
 };
 
-export default StructuresOfLivingThingsPage;
+export default function StructuresOfLivingThingsPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="px-4 py-4 max-w-5xl mx-auto">
+          <BackButton />
+        </div>
+      </header>
+
+      <main className="px-4 py-8 max-w-5xl mx-auto">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 rounded-lg bg-teal-100 text-teal-700">
+            <BookOpen className="h-6 w-6" />
+          </div>
+          <h1 className="text-3xl font-bold text-slate-800">
+             Structures of living things
+          </h1>
+        </div>
+
+        <div className="bg-white/70 backdrop-blur-sm border border-teal-100 rounded-xl p-6 mb-8">
+          <p className="text-slate-700 leading-relaxed">
+            Living things have different structures that help them survive and grow. Plants have leaves, stems, and roots that each perform special functions to keep the plant healthy.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          <SectionCard icon={<Target className="h-5 w-5 text-emerald-600" />} title="Learning Objectives" color="emerald">
+            <ul className="space-y-3 list-disc pl-5 marker:text-emerald-500">
+                <li>State the major structures in plants and their functions (leaves make food, roots absorb water and nutrients and anchor plants, stems support the plant and transport water, food and nutrients)</li>
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={<Lightbulb className="h-5 w-5 text-amber-600" />} title="Interactive Activities" color="amber">
+            <ul className="space-y-3 list-disc pl-5 marker:text-amber-500">
+              <li>Label the parts of a plant diagram</li>
+              <li>Observe real plants and identify their structures</li>
+              <li>Create a model plant showing different structures</li>
+              <li>Match plant parts to their functions</li>
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={<CheckSquare className="h-5 w-5 text-sky-600" />} title="Learning Outcomes" color="sky">
+            <p className="text-slate-700 leading-relaxed">
+              Students will be able to identify plant structures and explain their functions in plant survival and growth.
+            </p>
+          </SectionCard>
+
+          <SectionCard icon={<Heart className="h-5 w-5 text-rose-600" />} title="Values & Attitudes" color="rose">
+            <ul className="space-y-3 list-disc pl-5 marker:text-rose-500">
+              <li>Appreciation for the complexity of living things</li>
+              <li>Curiosity about how plants function</li>
+            </ul>
+          </SectionCard>
+
+          <SectionCard icon={<Microscope className="h-5 w-5 text-indigo-600" />} title="STSE Connections" color="indigo">
+            <ul className="space-y-3 list-disc pl-5 marker:text-indigo-500">
+              <li>Understanding how plants contribute to ecosystems</li>
+              <li>Recognizing the importance of plants in food production</li>
+            </ul>
+          </SectionCard>
+        </div>
+
+        <div className="mt-8">
+          <SectionCard icon={<HelpCircle className="h-5 w-5 text-purple-600" />} title="Practice Questions" color="purple">
+            <QuizSection quizData={quizData} />
+          </SectionCard>
+        </div>
+      </main>
+    </div>
+  )
+}
